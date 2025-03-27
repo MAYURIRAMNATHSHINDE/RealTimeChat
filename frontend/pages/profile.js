@@ -22,7 +22,7 @@ async function checkAuth() {
   if (!token) return redirectToLogin();
 
   try {
-    const response = await fetch("http://localhost:3000/user/check-auth", {
+    const response = await fetch("https://realtimechat-2-u3vp.onrender.com/user/check-auth", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -47,28 +47,13 @@ async function checkAuth() {
 }
 
 // Fetch user profile and populate the UI
-// async function loadUserProfile() {
-//   try {
-//     const response = await fetch("http://localhost:3000/user/profile", {
-//       method: "GET",
-//       credentials: "include",
-//     });
 
-//     if (!response.ok) throw new Error("Failed to load profile");
-
-//     const { profilePic, username } = await response.json();
-//     if (profilePic) document.getElementById("profile-img").src = profilePic;
-//     if (username) document.getElementById("username").value = username;
-//   } catch (error) {
-//     console.error("Profile Load Error:", error);
-//   }
-// }
 async function loadUserProfile() {
   try {
     const token = getAuthToken();
     if (!token) throw new Error("Missing auth token");
 
-    const response = await fetch("http://localhost:3000/user/profile", {
+    const response = await fetch("https://realtimechat-2-u3vp.onrender.com/user/profile", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -92,38 +77,7 @@ async function loadUserProfile() {
 }
 
 // Upload profile image and update server
-// async function uploadImage(file) {
-//   const reader = new FileReader();
-//   reader.onloadend = async () => {
-//     try {
-//       const usernameInput = document.getElementById("username");
-//       if (!usernameInput) throw new Error("Username input not found.");
 
-//       const response = await fetch("http://localhost:3000/user/update-profile", {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           username: usernameInput.value,
-//           profilePic: reader.result,
-//         }),
-//       });
-
-//       const result = await response.json();
-//       if (!response.ok) throw new Error(result.message || "Failed to update profile.");
-
-//       alert(result.msg);
-//       if (result.updatedUser?.profilePic) {
-//         document.getElementById("profile-img").src = result.updatedUser.profilePic;
-//       }
-//     } catch (error) {
-//       console.error("Upload Error:", error);
-//       alert("Failed to update profile. Try again later.");
-//     }
-//   };
-//   reader.readAsDataURL(file);
-// }
 async function uploadImage(file) {
   const token = getAuthToken();
   if (!token) return redirectToLogin();
@@ -131,7 +85,7 @@ async function uploadImage(file) {
   const reader = new FileReader();
   reader.onloadend = async () => {
     try {
-      const response = await fetch("http://localhost:3000/user/update-profile", {
+      const response = await fetch("https://realtimechat-2-u3vp.onrender.com/user/update-profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

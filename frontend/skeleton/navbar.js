@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
   document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-      const response = await fetch('http://localhost:3000/user/logout', {
+      const response = await fetch('https://realtimechat-2-u3vp.onrender.com/user/logout', {
         method: 'POST',
         credentials: 'include', // Ensures cookies are sent
       });

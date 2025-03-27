@@ -4,7 +4,7 @@ console.log("send button clicked...")
 // Fetch users for sidebar
 async function fetchUsers() {
   try {
-    const response = await fetch("http://localhost:3000/chat/get-user", {
+    const response = await fetch("https://realtimechat-2-u3vp.onrender.com/chat/get-user", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) throw new Error("Failed to fetch users");
@@ -89,7 +89,7 @@ async function openChat(user) {
   // Load messages
 try {
   console.log("load message button clicked...")
-  const response = await fetch(`http://localhost:3000/chats/get-messages/${user._id}`, {
+  const response = await fetch(`https://realtimechat-2-u3vp.onrender.com/chats/get-messages/${user._id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!response.ok) throw new Error("Failed to load messages");
@@ -174,7 +174,7 @@ sendBtn.addEventListener("click", async () => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
-    const response = await fetch(`http://localhost:3000/chats/send/${user._id}`, {
+    const response = await fetch(`https://realtimechat-2-u3vp.onrender.com/chats/send/${user._id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

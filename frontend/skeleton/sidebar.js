@@ -15,9 +15,11 @@ let selectedUser = null;
 // Fetch user data from backend
 async function fetchUsers() {
   try {
-    const response = await fetch("http://localhost:3000/user/all-user");
+    const response = await fetch("https://realtimechat-2-u3vp.onrender.com/user/all-user");
+    console.log(response)
     if (!response.ok) throw new Error("Failed to fetch users");
     users = await response.json();
+    console.log("Fetched Users:", users);
     renderUsers();
   } catch (error) {
     userList.innerHTML = "<p>Error loading users</p>";
