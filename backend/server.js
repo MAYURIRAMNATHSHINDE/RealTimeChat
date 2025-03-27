@@ -94,7 +94,7 @@ const PORT = process.env.PORT || 3000;
 
 // ✅ **Fix CORS Configuration**
 app.use(cors({
-    origin: "https://mychattywebsite.netlify.app",   // Allow all origins (change to specific domain in production)
+    origin: "https://lively-capybara-c21c1c.netlify.app",   // Allow all origins (change to specific domain in production)
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
