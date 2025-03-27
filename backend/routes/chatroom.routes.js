@@ -1,114 +1,74 @@
 const express = require('express');
-const chatrouter = express.Router();
+const { messageModel } = require('../models/message.model');
 
-const mongoose = require('mongoose');
-const { chatModel } = require('../models/messageRoom.models');
+const authMiddleware = require('../middleware/auth.middleware');
+const { userModel } = require('../models/user.models');
+const { chatRoomModel } = require('../models/messageRoom.models');
+const cloudinary = require('cloudinary').v2;
+const chatRoomRoutes = express.Router();
 
-// Create a new chat room
-chatrouter.post('/create/chat', async (req, res) => {
+// 📌 Create Chatroom
+chatRoomRoutes.post("/create-chatroom", authMiddleware, async (req, res) => {
     try {
         const { name, participants } = req.body;
-
-        //if a room with the same name already exists
-        const existingRoom = await chatModel.findOne({ name });
-        if (existingRoom) {
-            return res.status(400).json({ error: 'Chat room already exists' });
-        }
-
-   
-        if (!participants || !Array.isArray(participants)) {
-            return res.status(400).json({ error: 'Participants must be an array' });
-        }
-
-        // new chat room
-        const newChatRoom = new chatModel({ name, participants });
-        await newChatRoom.save();
-        res.status(201).json(newChatRoom);
+        const newChatroom = await chatRoomModel.create({ name, participants });
+        res.status(201).json({ message: "Chatroom created successfully", newChatroom });
     } catch (error) {
-        console.error('Error creating chat room:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
-// Get all chat rooms
-// router.get('/', async (req, res) => {
-//     try {
-//         const chatRooms = await chatModel.find().populate('participants', 'name email');
-//         res.status(200).json(chatRooms);
-//     } catch (error) {
-//         console.error('Error fetching chat rooms:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
+// 📌 Get User Chatrooms
+chatRoomRoutes.get("/get-chatrooms", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const chatrooms = await chatRoomModel.find({ participants: userId }).populate('participants', '-password');
+        res.status(200).json(chatrooms);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
-// Get a chat room by ID
-// router.get('/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
+// 📌 Send Message to Chatroom
+chatRoomRoutes.post("/send/:chatroomId", authMiddleware, async (req, res) => {
+    try {
+        const { chatroomId } = req.params;
+        const senderId = req.user.id;
+        const { text, image } = req.body;
 
-//         if (!mongoose.Types.ObjectId.isValid(id)) {
-//             return res.status(400).json({ error: 'Invalid chatRoomId' });
-//         }
+        let imageUrl = null;
+        if (image) {
+            const uploadedImage = await cloudinary.uploader.upload(image);
+            imageUrl = uploadedImage.secure_url;
+        }
 
-//         const chatRoom = await chatModel.findById(id).populate('participants', 'name email');
-//         if (!chatRoom) {
-//             return res.status(404).json({ error: 'Chat room not found' });
-//         }
+        const newMessage = await messageModel.create({
+            chatroomId,
+            senderId,
+            text,
+            image: imageUrl
+        });
 
-//         res.status(200).json(chatRoom);
-//     } catch (error) {
-//         console.error('Error fetching chat room:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
+        // Emit message to chatroom via socket.io (added later)
+        res.status(201).json(newMessage);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
-// Update a chat room by ID
-// router.put('/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const { name, participants } = req.body;
+// 📌 Get Messages in a Chatroom
+chatRoomRoutes.get("/get-messages/:chatroomId", authMiddleware, async (req, res) => {
+    try {
+        const { chatroomId } = req.params;
+        const messages = await messageModel.find({ chatroomId }).populate('senderId', 'username');
+        res.status(200).json(messages);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
-//         if (!mongoose.Types.ObjectId.isValid(id)) {
-//             return res.status(400).json({ error: 'Invalid chatRoomId' });
-//         }
-
-//         const updatedChatRoom = await chatModel.findByIdAndUpdate(
-//             id,
-//             { name, participants },
-//             { new: true, runValidators: true }
-//         );
-
-//         if (!updatedChatRoom) {
-//             return res.status(404).json({ error: 'Chat room not found' });
-//         }
-
-//         res.status(200).json(updatedChatRoom);
-//     } catch (error) {
-//         console.error('Error updating chat room:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
-
-// Delete a chat room by ID
-// router.delete('/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-
-//         if (!mongoose.Types.ObjectId.isValid(id)) {
-//             return res.status(400).json({ error: 'Invalid chatRoomId' });
-//         }
-
-//         const deletedChatRoom = await chatModel.findByIdAndDelete(id);
-
-//         if (!deletedChatRoom) {
-//             return res.status(404).json({ error: 'Chat room not found' });
-//         }
-
-//         res.status(200).json({ message: 'Chat room deleted successfully' });
-//     } catch (error) {
-//         console.error('Error deleting chat room:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
-
-module.exports = chatrouter;
+module.exports = chatRoomRoutes;

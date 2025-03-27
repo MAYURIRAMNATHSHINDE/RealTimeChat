@@ -1,73 +1,15 @@
-// const express=require("express");
-// const { ConnectToDB } = require("./config/mongo.config");
-// const router = require("./routes/user.routes");
-// require('dotenv').config()
-
-// const http = require('http');
-// const socketIo = require('socket.io');
-// const chatRoutes = require("./routes/chat.routes");
-// const path = require("path");
-
-// const app = express();
-// const PORT = process.env.PORT || 3000;
-
-// app.use(express.json());
-// const server = http.createServer(app);
-// const io = socketIo(server); 
-// app.use("/user",router)
-// app.use('/chats', chatRoutes);
-
-
-
-// app.use(express.static(path.join(__dirname, 'frontend')));
-
-
-// io.on('connection', (socket) => {
-//     console.log('A user connected:', socket.id);
-
-//     // Handle joining a room
-//     socket.on('joinRoom', (roomId) => {
-//         socket.join(roomId);
-//         console.log(`User ${socket.id} joined room: ${roomId}`);
-//     });
-
-//     // Handle sending a message
-//     socket.on('sendMessage', (data) => {
-//         io.to(data.roomId).emit('receiveMessage', {
-//             sender: data.sender,
-//             content: data.content,
-//         });
-//     });
-
-//     // Handle disconnection
-//     socket.on('disconnect', () => {
-//         console.log('User disconnected:', socket.id);
-//     });
-// });
-
-
-
-
-
-
-// server.listen(PORT, () => {
-//     ConnectToDB()
-//     console.log(`Server running on http://localhost:${PORT}`);
-// });
-
-
-
-
 const express = require("express");
 const { ConnectToDB } = require("./config/mongo.config");
 const router = require("./routes/user.routes");
 require("dotenv").config();
-
+const cors = require("cors");
 const http = require("http");
 const socketIo = require("socket.io");
-const chatRoutes = require("./routes/chat.routes");
+const chatRoutes = require("./routes/message.routes");
 const path = require("path");
-const chatrouter = require("./routes/chatroom.routes");
+
+
+const chatRoomRoutes = require("./routes/chatroom.routes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -76,8 +18,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use("/user", router);
 app.use("/chats", chatRoutes);
-app.use("/room", chatrouter);
+app.use("/room", chatRoomRoutes);
 app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.get("/", (req, res) => {
     console.log('Serving static files from:', path.join(__dirname, 'frontend'));
 
@@ -96,28 +40,7 @@ const io = socketIo(server, {
 ConnectToDB();
 
 // Socket.IO Connection
-// io.on("connection", (socket) => {
-//     console.log("A user connected:", socket.id);
 
-//     // Handle joining a room
-//     socket.on("joinRoom", (chatRoomId) => {
-//         socket.join(chatRoomId);
-//         console.log(`User ${socket.id} joined room: ${chatRoomId}`);
-//     });
-
-//     // Handle sending a message
-//     socket.on("sendMessage", (data) => {
-//         io.to(data.chatRoomId).emit("receiveMessage", {
-//             sender: data.sender,
-//             content: data.content,
-//         });
-//     });
-
-//     // Handle disconnection
-//     socket.on("disconnect", () => {
-//         console.log("User disconnected:", socket.id);
-//     });
-// });
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
@@ -130,12 +53,13 @@ io.on('connection', (socket) => {
     // Handle sending messages
     socket.on('sendMessage', (messageData) => {
         console.log('Message received:', messageData);
-        const { chatRoomId, sender, content } = messageData;
+        const { chatRoomId, senderId,text,image } = messageData;
 
         // Emit message to all users in the room
         io.to(chatRoomId).emit('receiveMessage', {
-            sender,
-            content,
+            senderId,
+            text,
+            image,
             timestamp: new Date(),
         });
     });

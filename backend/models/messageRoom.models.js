@@ -9,5 +9,5 @@ const chatRoomSchema = new mongoose.Schema(
         timestamps: true
     });
 
-const chatModel = mongoose.model('ChatRoom', chatRoomSchema);
-module.exports={chatModel}
+const chatRoomModel = mongoose.model('ChatRoom', chatRoomSchema);
+module.exports={chatRoomModel}

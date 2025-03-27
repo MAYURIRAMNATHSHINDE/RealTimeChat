@@ -2,21 +2,53 @@
 <html lang="en">
 
 <head>
-    <title>Chat Room</title>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./style/style.css" />
 </head>
 
 <body>
-    <h2 id="room-title">Chat Room</h2>
 
-    <div id="messages"></div>
+<!-- Main Content -->
+<main>
+  <!-- Sidebar (User List) -->
+  <div id="sidebar" class="sidebar">
+    <h2>Contacts</h2>
+    <label>
+      <input type="checkbox" id="onlineToggle">
+      Show online only (<span id="onlineCount">0</span> online)
+    </label>
+    <div id="userList" class="user-list">Loading...</div>
+  </div>
 
-    <input type="text" id="messageInput" placeholder="Type a message..." />
-    <button id="sendButton">Send</button>
+  <!-- Chat Container (Rendered below navbar) -->
+  <div id="chatContainer" class="chat-container">
+    <p>Select a user to start chatting!</p>
+  </div>
+</main>
 
-    <!-- Include Socket.IO client -->
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script src="./chatPage.js"></script>
+
+
+  <script src="./skeleton/navbar.js"></script>
+  
+  <script src="./skeleton/sidebar.js"></script>
+
+  <script src="./chatPage.js"></script>
+  <script>
+    console.log("Token on Home Page:", localStorage.getItem("authToken"));
+  </script>
+
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>

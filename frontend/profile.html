@@ -1,0 +1,315 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <style>
+        /* Profile Page Styling */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #1c9c9c, #64ddc9, #2db69f);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #fff;
+  }
+  
+  /* Profile Container */
+  .profile-container {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid black;
+  }
+  
+  /* Profile Image */
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-picture:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Heading */
+  h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    border: 1px solid black;
+  }
+  
+  /* Input Fields */
+  label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: 600;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+  
+  /* Update Button */
+  .btn {
+    background: #1c9c9c;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .btn:hover {
+    background: #2db69f;
+  }
+  
+    </style>
+</head>
+<body>
+    <script src="./pages/profile.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
+    <!-- <style>
+        #profile-container {
+          max-width: 400px;
+          margin: auto;
+          text-align: center;
+        }
+      
+        .profile-picture {
+          position: relative;
+          display: inline-block;
+        }
+      
+        #profile-img {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      
+        .edit-icon {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+          background: white;
+          border-radius: 50%;
+          padding: 5px;
+          cursor: pointer;
+          font-size: 18px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+      
+        input[readonly] {
+          background: #f3f3f3;
+          cursor: not-allowed;
+        }
+      
+        .btn {
+          margin-top: 10px;
+          padding: 8px 16px;
+          cursor: pointer;
+        }
+      </style> -->
+   
+      <style>
+        /* Profile Container Styling */
+#profile-container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 40px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Heading */
+#profile-container h2 {
+  text-align: center;
+  color: #2a2a2a;
+  margin-bottom: 40px;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Profile Picture Section */
+.profile-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+#profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #2bbbad;
+}
+
+/* Edit Icon */
+.edit-icon {
+  border: 1px solid black;
+  position: absolute;
+  bottom: 10px;
+  left: 279px;
+  background: #2bbbad;
+  color: white;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
+  transform: translate(40%, -40%);
+}
+
+.edit-icon:hover {
+  background: #26a69a;
+}
+
+/* Welcome Message */
+#welcome-msg {
+  font-size: 22px;
+  margin: 20px 0;
+  color: #2a2a2a;
+  text-align: center;
+}
+
+/* Profile Info */
+.profile-info {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #2a2a2a;
+  font-size: 16px;
+}
+
+.profile-info input {
+  padding: 12px;
+  border: 1px solid #b2dfdb;
+  border-radius: 8px;
+  background: #e0f2f1;
+  color: #2a2a2a;
+  font-size: 14px;
+  outline: none;
+}
+
+/* Update Button */
+#update-profile-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 30px;
+  background: #2bbbad;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#update-profile-btn:hover {
+  background: #26a69a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #profile-container {
+    padding: 20px;
+  }
+  #profile-img {
+    width: 100px;
+    height: 100px;
+  }
+  .edit-icon {
+    bottom: 5px;
+    right: 5px;
+    font-size: 14px;
+    padding: 4px;
+    transform: translate(40%, -40%);
+  }
+  .profile-info input {
+    font-size: 14px;
+  }
+  #update-profile-btn {
+    font-size: 16px;
+  }
+}
+
+      </style>
+</head>
+<body>
+
+    <div id="profile-container">
+        <h2>My Profile</h2>
+      
+        <!-- Profile Picture Section -->
+        <div class="profile-picture">
+          <div id="welcome-msg"></div>
+
+          <img id="profile-img" src="" alt="Profile Picture" />
+          <label for="image-upload" class="edit-icon">✎</label>
+          <input type="file" id="image-upload" accept="image/*" hidden />
+        </div>
+      
+        <!-- Email (Read-Only) -->
+        <div class="profile-info">
+          <label for="email">Email:</label>
+          <input type="email" id="email" value="" readonly />
+        </div>
+      
+        <!-- Name Update Section -->
+        <div class="profile-info">
+          <label for="name">Name:</label>
+          <input type="text" id="username" placeholder="Enter your name" />
+          <button id="update-profile-btn" class="btn">Update Profile</button>
+        </div>
+      </div>
+
+  
+  <script src="./pages/profile.js"  defer></script>
+</body>
+</html>
