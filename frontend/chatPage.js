@@ -1,4 +1,4 @@
-const Container = document.getElementById("chatContainer");
+const chatContainer = document.getElementById("chatContainer");
 const token = localStorage.getItem("token");
 console.log("send button clicked...")
 // Fetch users for sidebar
@@ -42,7 +42,7 @@ function renderUsers(users) {
 console.log("open chat")
 // Open chat and load messages
 async function openChat(user) {
-  Container.innerHTML = `
+  chatContainer.innerHTML = `
     <div id="chatHeader" class="chat-header">
       <div class="user-info">
         <img src="${users.profilePic || '/avatar.png'}" alt="${users.username}">
@@ -63,7 +63,7 @@ async function openChat(user) {
   `;
 
   document.getElementById("closeChat").addEventListener("click", () => {
-    Container.innerHTML = "<p>Select a user to start chatting!</p>";
+    chatContainer.innerHTML = "<p>Select a user to start chatting!</p>";
   });
 
   const chatInput = document.getElementById("chatInput");

@@ -3,7 +3,7 @@
 const userList = document.getElementById("userList");
 const onlineToggle = document.getElementById("onlineToggle");
 const onlineCount = document.getElementById("onlineCount");
-const chatContainer1 = document.getElementById("chatContainer");
+const chatContainer = document.getElementById("chatContainer");
 const chatHeader = document.getElementById("chatHeader");
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
@@ -68,7 +68,7 @@ function selectUser(user) {
 // Render chat container
 function renderChat() {
   if (!selectedUser) {
-    chatContainer1.innerHTML = `
+    chatContainer.innerHTML = `
       <div class="welcome-message">
         <h2>Welcome to Chat!</h2>
         <p>Select a contact to start chatting.</p>
@@ -77,7 +77,7 @@ function renderChat() {
     return;
   }
 
-  chatContainer1.innerHTML = `
+  chatContainer.innerHTML = `
     <div id="chatHeader" class="chat-header">
       <div class="user-info">
         <img id="user-avatar" src="${selectedUser.profilePic || '/avatar.png'}" alt="${selectedUser.username}">
