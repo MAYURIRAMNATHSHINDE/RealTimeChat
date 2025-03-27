@@ -4,21 +4,29 @@ console.log("✅ profile.js is loaded!");
 // Utility: Retrieve auth token
 function getAuthToken() {
   const token = localStorage.getItem("authToken");
-  console.log("Retrieved Token:", token);
+  console.log("🔑 Retrieved Token from Local Storage:", token);
   return token;
 }
+
+async function checkAuth() {
+  const token = getAuthToken();
+  console.log("📌 Token before API call:", token);
+  if (!token) return redirectToLogin();
+}
+
 
 
 // Utility: Redirect to login page
 function redirectToLogin() {
   alert("Session expired. Please log in again.");
-  localStorage.removeItem("authToken");
-  window.location.href = "login.html";
+  //localStorage.removeItem("authToken");
+  // window.location.href = "login.html";
 }
 
 // Check user authentication and fetch profile
 async function checkAuth() {
   const token = getAuthToken();
+  console.log(token)
   if (!token) return redirectToLogin();
 
   try {
@@ -51,11 +59,12 @@ async function checkAuth() {
 async function loadUserProfile() {
   try {
     const token = getAuthToken();
+    console.log("profile 1")
     if (!token) throw new Error("Missing auth token");
-
+console.log("profile")
     const response = await fetch("https://realtimechat-2-u3vp.onrender.com/user/profile", {
       method: "GET",
-      credentials: "include",
+      // credentials: "include",
       headers: {
         Authorization: `Bearer ${token}`, // Include token here
       },
@@ -72,8 +81,13 @@ async function loadUserProfile() {
   } catch (error) {
     console.error("Profile Load Error:", error);
     alert("Error loading profile. Please try again.");
-    redirectToLogin();
+  
+    if (error.message.includes("Unauthorized")) {  
+      localStorage.removeItem("authToken");
+     // window.location.href = "login.html";
+    }
   }
+  
 }
 
 // Upload profile image and update server
