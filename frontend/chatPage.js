@@ -1,4 +1,4 @@
-const chatContainer = document.getElementById("chatContainer");
+const Container = document.getElementById("chatContainer");
 const token = localStorage.getItem("token");
 console.log("send button clicked...")
 // Fetch users for sidebar
@@ -42,10 +42,10 @@ function renderUsers(users) {
 console.log("open chat")
 // Open chat and load messages
 async function openChat(user) {
-  chatContainer.innerHTML = `
+  Container.innerHTML = `
     <div id="chatHeader" class="chat-header">
       <div class="user-info">
-        <img src="${user.profilePic || '/avatar.png'}" alt="${user.username}">
+        <img src="${users.profilePic || '/avatar.png'}" alt="${users.username}">
         <div>
           <h3>${user.username}</h3>
           <p>${user.isOnline ? "Online" : "Offline"}</p>
@@ -63,7 +63,7 @@ async function openChat(user) {
   `;
 
   document.getElementById("closeChat").addEventListener("click", () => {
-    chatContainer.innerHTML = "<p>Select a user to start chatting!</p>";
+    Container.innerHTML = "<p>Select a user to start chatting!</p>";
   });
 
   const chatInput = document.getElementById("chatInput");
@@ -89,7 +89,7 @@ async function openChat(user) {
   // Load messages
 try {
   console.log("load message button clicked...")
-  const response = await fetch(`https://realtimechat-2-u3vp.onrender.com/chats/get-messages/${user._id}`, {
+  const response = await fetch(`https://realtimechat-2-u3vp.onrender.com/chats/get-messages/${users._id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!response.ok) throw new Error("Failed to load messages");
@@ -174,7 +174,7 @@ sendBtn.addEventListener("click", async () => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
-    const response = await fetch(`https://realtimechat-2-u3vp.onrender.com/chats/send/${user._id}`, {
+    const response = await fetch(`https://realtimechat-2-u3vp.onrender.com/chats/send/${users._id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
